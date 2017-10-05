@@ -10,7 +10,7 @@ try {
 }
 
 //２．データ登録SQL作成
-$stmt = $pdo->prepare("SELECT * FROM gs_bm_table WHERE id=:id");
+$stmt = $pdo->prepare("SELECT * FROM gs_user_table WHERE id=:id");
 $stmt->bindValue(':id', $id);
 $status = $stmt->execute();
 
@@ -24,6 +24,7 @@ if($status==false){
   //Selectデータの数だけ自動でループしてくれる
   $row = $stmt->fetch(); //$row["name"]
 }
+
 ?>
 
 
@@ -31,9 +32,11 @@ if($status==false){
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>POSTデータ登録</title>
+  <title>ユーザ更新</title>
 <!--  <link href="css/bootstrap.min.css" rel="stylesheet">-->
   <style>div{padding: 10px;font-size:16px;}</style>
+<!--  <script src="js/jquery-2.1.3.min.js"></script>-->
+
 </head>
 <body>
 
@@ -41,25 +44,30 @@ if($status==false){
 <header>
   <nav class="navbar navbar-default">
 <!--    <div class="container-fluid">-->
-    <div class="navbar-header"><a class="navbar-brand" href="select.php">データ一覧</a></div>
+    <div class="navbar-header"><a class="navbar-brand" href="user_select.php">ユーザ一覧</a></div>
   </nav>
 </header>
 <!-- Head[End] -->
 
 <!-- Main[Start] -->
-<form method="post" action="update.php">
+<form method="post" action="user_update.php">
   <div class="jumbotron">
    <fieldset>
-    <legend>ブックマーク</legend>
+    <legend>ユーザー</legend>
      <label>名前：<input type="text" name="name" value="<?=$row["name"]?>"></label><br>
-     <label>Email：<input type="text" name="url" value="<?=$row["url"]?>"></label><br>
-     <label><textArea name="naiyou" rows="4" cols="40"><?=$row["naiyou"]?></textArea></label><br>
+     <label>ユーザＩＤ：<input type="text" name="lid" value="<?=$row["lid"]?>"></label><br>
+     <label>ユーザパスワード：<input type="text" name="lpw" value="<?=$row["lpw"]?>"></label><br>
+     <label>管理者<input type="radio" name="kanri_flg" value="0" <?php if($row["kanri_flg"] == 0) echo "checked" ?>>スーパー管理者<input type="radio" name="kanri_flg" value="1" <?php if($row["kanri_flg"] == 1)echo "checked" ?>></label><br>
+     
+     
+     <label>使用中<input type="radio" name="life_flg" value="0" <?php if($row["life_flg"] == 0) echo "checked" ?>>使用しない<input type="radio" name="life_flg" value="1" <?php if($row["life_flg"] == 1) echo "checked" ?>></label><br>
      <input type="hidden" name="id" value="<?=$id?>">
      <input type="submit" value="送信">
     </fieldset>
   </div>
 </form>
 <!-- Main[End] -->
+
 
 
 </body>
